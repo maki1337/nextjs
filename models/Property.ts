@@ -1,6 +1,52 @@
-import { Schema, model, models } from "mongoose";
+import { Schema, model, models, Model, Types } from "mongoose";
 
-const PropertySchema: Schema = new Schema(
+// Define the Location interface
+interface Location {
+  street: string;
+  city: string;
+  state: string;
+  zipcode: string;
+}
+
+// Define the Rates interface
+interface Rates {
+  nightly?: number;
+  weekly?: number;
+  monthly?: number;
+}
+
+// Define the SellerInfo interface
+interface SellerInfo {
+  name: string;
+  email: string;
+  phone: string;
+}
+
+// Define the Property Interface (Add _id here)
+export interface Property {
+  _id?: Types.ObjectId; // _id is optional and can be ObjectId
+  owner: Types.ObjectId; // User is referenced by ObjectId
+  name: string;
+  type: string;
+  description?: string;
+  location: Location;
+  beds: number;
+  baths: number;
+  square_feet: number;
+  amenities: string[];
+  rates: Rates;
+  seller_info: SellerInfo;
+  images: string[];
+  is_featured: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+// Property Document Interface extends Document (which includes _id)
+export interface PropertyDocument extends Property {}
+
+// Mongoose Model for Property
+const PropertySchema: Schema<PropertyDocument> = new Schema(
   {
     owner: {
       type: Schema.Types.ObjectId,
@@ -64,5 +110,8 @@ const PropertySchema: Schema = new Schema(
   { timestamps: true }
 );
 
-const Property = models.Property || model("Property", PropertySchema);
+// Export the Mongoose model with the correct typing
+const Property: Model<PropertyDocument> =
+  models.Property || model<PropertyDocument>("Property", PropertySchema);
+
 export default Property;
