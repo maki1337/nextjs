@@ -18,6 +18,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   const getRateDisplay = () => {
     const { rates } = property;
 
+    if (!rates) return "Rates not available";
+
     if (rates.monthly) {
       return `$${rates.monthly.toLocaleString()}/mo`;
     } else if (rates.weekly) {
@@ -30,7 +32,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   return (
     <div className="rounded-xl shadow-md relative">
       <Image
-        src={`/images/${property.images[0]}`}
+        src={`${property.images[0]}`}
         alt=""
         width={0}
         height={0}
