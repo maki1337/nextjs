@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 import PropertyDetails from "@/components/PropertyDetails";
 import PropertyImages from "@/components/PropertyImages";
+import { convertToSerializableObject } from "@/utils/convertToObject";
 
 interface PropertyPageProps {
   params: {
@@ -15,11 +16,13 @@ interface PropertyPageProps {
 const PropertyPage: React.FC<PropertyPageProps> = async ({ params }) => {
   await connectDB();
 
-  const property = await Property.findById(params.id).lean();
+  const propertyDoc = await Property.findById(params.id).lean();
 
-  if (!property) {
+  if (!propertyDoc) {
     return <p>Property not found</p>;
   }
+
+  const property = convertToSerializableObject(propertyDoc);
   return (
     <>
       {property && <PropertyHeaderImage image={property.images[0]} />}
