@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import deleteProperty from "@/app/actions/deleteProperty";
+import { toast } from "react-toastify";
 
 interface ProfilePropertiesProps {
   properties: Record<string, any>[];
@@ -26,6 +27,7 @@ const ProfileProperties: React.FC<ProfilePropertiesProps> = ({
     );
 
     setProperties(updatedProperties);
+    toast.success("Property deleted");
   };
 
   return properties.map((property, index) => (
